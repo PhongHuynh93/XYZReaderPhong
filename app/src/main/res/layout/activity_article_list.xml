@@ -1,14 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".view.impl.ArticleListActivity">
+    android:layout_height="match_parent">
 
-</FrameLayout>
+    <!--add toolbar-->
+    <include layout="@layout/include_article_list_toolbar"/>
+
+    <!--content-->
+    <!--in content, remmember to declare the behavior so it can depend on scroll in list-->
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include layout="@layout/include_article_list"/>
+
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>
