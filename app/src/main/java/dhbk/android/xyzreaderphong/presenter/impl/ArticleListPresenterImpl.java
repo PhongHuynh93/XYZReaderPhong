@@ -2,11 +2,11 @@ package dhbk.android.xyzreaderphong.presenter.impl;
 
 import android.support.annotation.NonNull;
 
+import javax.inject.Inject;
+
+import dhbk.android.xyzreaderphong.interactor.ArticleListInteractor;
 import dhbk.android.xyzreaderphong.presenter.ArticleListPresenter;
 import dhbk.android.xyzreaderphong.view.ArticleListView;
-import dhbk.android.xyzreaderphong.interactor.ArticleListInteractor;
-
-import javax.inject.Inject;
 
 public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleListView> implements ArticleListPresenter {
     /**
@@ -44,5 +44,13 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
          */
 
         super.onPresenterDestroyed();
+    }
+
+    /**
+     * todo call the interactor to load data to listview
+     */
+    @Override
+    public void loadDataToRecyclerView() {
+
     }
 }

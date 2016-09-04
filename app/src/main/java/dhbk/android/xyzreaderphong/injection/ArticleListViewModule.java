@@ -2,14 +2,14 @@ package dhbk.android.xyzreaderphong.injection;
 
 import android.support.annotation.NonNull;
 
-import dhbk.android.xyzreaderphong.interactor.ArticleListInteractor;
-import dhbk.android.xyzreaderphong.interactor.impl.ArticleListInteractorImpl;
-import dhbk.android.xyzreaderphong.presenter.loader.PresenterFactory;
-import dhbk.android.xyzreaderphong.presenter.ArticleListPresenter;
-import dhbk.android.xyzreaderphong.presenter.impl.ArticleListPresenterImpl;
-
 import dagger.Module;
 import dagger.Provides;
+import dhbk.android.xyzreaderphong.interactor.ArticleListInteractor;
+import dhbk.android.xyzreaderphong.interactor.impl.ArticleListInteractorImpl;
+import dhbk.android.xyzreaderphong.presenter.ArticleListPresenter;
+import dhbk.android.xyzreaderphong.presenter.impl.ArticleListPresenterImpl;
+import dhbk.android.xyzreaderphong.presenter.loader.PresenterFactory;
+import dhbk.android.xyzreaderphong.view.impl.ArticleListAdapter;
 
 @Module
 public final class ArticleListViewModule {
@@ -27,5 +27,10 @@ public final class ArticleListViewModule {
                 return new ArticleListPresenterImpl(interactor);
             }
         };
+    }
+
+    @Provides
+    public ArticleListAdapter provideArticleListAdapter() {
+        return new ArticleListAdapter(null);
     }
 }

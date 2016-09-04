@@ -42,9 +42,9 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
     // sqlbrite + dao
     // http://hannesdorfmann.com/android/sqlbrite-dao
-    // compile 'com.hannesdorfmann.sqlbrite:dao:0.6.1'
-    // compile 'com.hannesdorfmann.sqlbrite:annotations:0.6.1'
-    // apt 'com.hannesdorfmann.sqlbrite:object-mapper:0.6.1'
+     compile 'com.hannesdorfmann.sqlbrite:dao:0.6.1'
+     compile 'com.hannesdorfmann.sqlbrite:annotations:0.6.1'
+     apt 'com.hannesdorfmann.sqlbrite:object-mapper:0.6.1'
     // dagger 2
     compile 'com.google.dagger:dagger:2.6.1'
     apt 'com.google.dagger:dagger-compiler:2.6.1'
