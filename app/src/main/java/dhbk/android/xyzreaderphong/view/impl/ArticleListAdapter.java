@@ -47,13 +47,16 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         return new ViewHolder(contactView);
     }
 
+    // call the dynamic height in the thumbnailView
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.titleView.setText(mXYZList.get(position).getMTitle());
         holder.authorView.setText(mXYZList.get(position).getMAuthor());
 
+
         // fixme - set the image depend on aspect radio
         holder.thumbnailView.setAspectRatio((float) mXYZList.get(position).getMAspectRadio());
+        // end set the image depend on aspect radio 
 
         // clear the previous pending image
         Glide.clear(holder.thumbnailView);
