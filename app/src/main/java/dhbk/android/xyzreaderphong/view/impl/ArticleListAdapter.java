@@ -62,7 +62,8 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         Glide.clear(holder.thumbnailView);
 
         // fixme - load new image and cache this image + set palette background depend on bitmap which has downloaded
-        Glide.with(holder.thumbnailView.getContext())
+        // pass activity context so the image will depend on the activity lifecycle and can pause or start loading image -> so not leak memory.
+        Glide.with(mContext)
                 .load(mXYZList.get(position).getMThumbUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
