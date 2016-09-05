@@ -61,7 +61,7 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
      */
     @Override
     public void loadDataToRecyclerViewFromNetwork() {
-        // todo - check the network
+        //  - check the network
         // check network connection
         if (mView != null && !mView.isConnectedToNetwork()) {
             return;
@@ -74,7 +74,7 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
         mInteractor.downloadDataFromNetwork(new ArticleListInteractor.DownloadDataFromNetworkCallback() {
             @Override
             public void onSuccess(List<XYZResponse> xyzResponse) {
-                // todo - update the list
+                //  - update the list
                 mView.addNewDataToRecyclerview(xyzResponse);
 
                 //  - save to db
@@ -85,7 +85,7 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
 
             @Override
             public void onFailed() {
-                // todo - show toast
+                //  - show toast
                 mView.showFailLoadingDataMessage();
             }
         });

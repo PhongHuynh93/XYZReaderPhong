@@ -125,7 +125,7 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
     }
 
     /**
-     * todo - will call when the swipe action is trigger
+     *  - will call when the swipe action is trigger
      */
     @Override
     public void onRefresh() {
