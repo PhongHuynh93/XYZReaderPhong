@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import javax.inject.Inject;
 
 import dhbk.android.xyzreaderphong.interactor.ArticleListInteractor;
+import dhbk.android.xyzreaderphong.interactor.XYZResponse;
 import dhbk.android.xyzreaderphong.presenter.ArticleListPresenter;
 import dhbk.android.xyzreaderphong.view.ArticleListView;
 
@@ -47,10 +48,39 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
     }
 
     /**
-     * todo call the interactor to load data to listview
+     * todo call the interactor to load data from database to listview
      */
     @Override
-    public void loadDataToRecyclerView() {
+    public void loadDataToRecyclerViewFromDb() {
 
+    }
+
+    /**
+     * todo call the interactor to load data from network to listview
+     */
+    @Override
+    public void loadDataToRecyclerViewFromNetwork() {
+        // todo - check the network
+        // check network connection
+        if (mView != null) {
+            if (mView.isConnectedToNetwork()) {
+
+            } else {
+
+            }
+        }
+
+        mInteractor.downloadDataFromNetwork(new ArticleListInteractor.DownloadDataFromNetworkCallback() {
+            @Override
+            public void onSuccess(XYZResponse xyzResponse) {
+                // todo - save to db
+                // todo - upate the list
+            }
+
+            @Override
+            public void onFailed() {
+                // todo - show toast
+            }
+        });
     }
 }

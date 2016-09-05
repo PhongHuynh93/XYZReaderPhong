@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">XYZReaderPhong</string>
+
+    <string name="all_not_connect_to_network">Not online, not refreshing.</string>
 </resources>

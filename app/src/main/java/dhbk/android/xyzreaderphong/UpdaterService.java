@@ -8,6 +8,9 @@ import android.net.NetworkInfo;
 import android.text.format.Time;
 import android.widget.Toast;
 
+/**
+ * service used to get data from network
+ */
 public class UpdaterService extends IntentService {
     private static final String BROADCAST_ACTION_STATE_CHANGE = "state_change";
     private static final String EXTRA_REFRESHING = "refreshing";
@@ -44,6 +47,7 @@ public class UpdaterService extends IntentService {
                 new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, true));
 
         // TODO: 9/4/16 use retrofit to get the data from the url
+
     }
 
 }

@@ -4,7 +4,12 @@ import dhbk.android.xyzreaderphong.view.ArticleListView;
 
 public interface ArticleListPresenter extends BasePresenter<ArticleListView> {
     /**
-     * call the interactor to load data to listview
+     * call the interactor to load data from database to listview
      */
-    void loadDataToRecyclerView();
+    void loadDataToRecyclerViewFromDb();
+
+    /**
+     * call the interactor to load data from network to listview
+     */
+    void loadDataToRecyclerViewFromNetwork();
 }

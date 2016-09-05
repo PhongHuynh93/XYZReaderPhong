@@ -1,19 +1,22 @@
 package dhbk.android.xyzreaderphong.view.impl;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
 import butterknife.BindInt;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dhbk.android.xyzreaderphong.R;
-import dhbk.android.xyzreaderphong.UpdaterService;
 import dhbk.android.xyzreaderphong.injection.AppComponent;
 import dhbk.android.xyzreaderphong.injection.ArticleListViewModule;
 import dhbk.android.xyzreaderphong.injection.DaggerArticleListViewComponent;
@@ -34,6 +37,8 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindInt(R.integer.grid_column_count)
     int columnCount;
+    @BindString(R.string.all_not_connect_to_network)
+    String mNotConnectToNetworkMessage;
 
     // Your presenter is available using the mPresenter variable
 
@@ -64,6 +69,8 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
         // set adapter
         mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);
+
+        // // TODO: 9/5/16 load db from database for the first time if not connect to network
     }
 
 
@@ -73,12 +80,15 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
 
         // load data to recyclerview
         if (mPresenter != null) {
-            mPresenter.loadDataToRecyclerView();
+            mPresenter.loadDataToRecyclerViewFromDb();
         }
 
         // if the first time the activity start (if condif change, it is not the first time)
         if (mFirstStart) {
-            UpdaterService.startActionDownloadInfo(this);
+            if (mPresenter != null) {
+                mPresenter.loadDataToRecyclerViewFromNetwork();
+            }
+//            UpdaterService.startActionDownloadInfo(this);
         }
     }
 
@@ -104,6 +114,26 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
      */
     @Override
     public void onRefresh() {
+        if (mPresenter != null) {
+            mPresenter.loadDataToRecyclerViewFromNetwork();
+        }
+    }
 
+    /**
+     * check to see if there are any active networks.
+     *
+     * @return false: there are not any active networks
+     */
+    @Override
+    public boolean isConnectedToNetwork() {
+        // check network connection
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null || !ni.isConnected()) {
+            Toast.makeText(ArticleListActivity.this, mNotConnectToNetworkMessage, Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
     }
 }
