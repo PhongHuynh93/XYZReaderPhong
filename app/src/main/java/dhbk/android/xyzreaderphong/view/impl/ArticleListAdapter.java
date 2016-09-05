@@ -56,12 +56,12 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
         // fixme - set the image depend on aspect radio
         holder.thumbnailView.setAspectRatio((float) mXYZList.get(position).getMAspectRadio());
-        // end set the image depend on aspect radio 
+        // end set the image depend on aspect radio
 
         // clear the previous pending image
         Glide.clear(holder.thumbnailView);
 
-        // load new image and cache this image
+        // fixme - load new image and cache this image + set palette background depend on bitmap which has downloaded
         Glide.with(holder.thumbnailView.getContext())
                 .load(mXYZList.get(position).getMThumbUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -74,10 +74,12 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        // get the bitmap which has downloaded
                         Bitmap bitmap = ((GlideBitmapDrawable) resource.getCurrent()).getBitmap();
                         Palette palette = Palette.generate(bitmap);
                         int defaultColor = 0xFF333333;
                         int color = palette.getDarkMutedColor(defaultColor);
+                        // change the background image of all the item in the recyclerview depend on the bitmap palette color.
                         holder.itemView.setBackgroundColor(color);
                         return false;
                     }
