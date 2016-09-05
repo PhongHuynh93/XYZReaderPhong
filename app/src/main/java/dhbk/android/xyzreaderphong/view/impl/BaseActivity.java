@@ -7,14 +7,14 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
-import dhbk.android.xyzreaderphong.App;
-import dhbk.android.xyzreaderphong.presenter.loader.PresenterFactory;
-import dhbk.android.xyzreaderphong.presenter.loader.PresenterLoader;
-import dhbk.android.xyzreaderphong.injection.AppComponent;
-import dhbk.android.xyzreaderphong.presenter.BasePresenter;
-
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import dhbk.android.xyzreaderphong.App;
+import dhbk.android.xyzreaderphong.injection.AppComponent;
+import dhbk.android.xyzreaderphong.presenter.BasePresenter;
+import dhbk.android.xyzreaderphong.presenter.loader.PresenterFactory;
+import dhbk.android.xyzreaderphong.presenter.loader.PresenterLoader;
 
 public abstract class BaseActivity<P extends BasePresenter<V>, V> extends AppCompatActivity implements LoaderManager.LoaderCallbacks<P> {
     /**
@@ -37,7 +37,7 @@ public abstract class BaseActivity<P extends BasePresenter<V>, V> extends AppCom
     /**
      * Is this the first start of the activity (after onCreate)
      */
-    private boolean mFirstStart;
+    public boolean mFirstStart;
     /**
      * Unique identifier for the loader, persisted across re-creation
      */

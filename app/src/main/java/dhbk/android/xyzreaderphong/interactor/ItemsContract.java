@@ -8,6 +8,8 @@ import com.hannesdorfmann.sqlbrite.objectmapper.annotation.ObjectMappable;
  */
 @ObjectMappable
 public class ItemsContract {
+    public static final String DB_NAME = "XYZ_reader_database";
+
     public static final String TABLE_NAME = "items";
 
     //     7b - the column for this table

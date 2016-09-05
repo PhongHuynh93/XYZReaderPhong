@@ -13,6 +13,7 @@ import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dhbk.android.xyzreaderphong.R;
+import dhbk.android.xyzreaderphong.UpdaterService;
 import dhbk.android.xyzreaderphong.injection.AppComponent;
 import dhbk.android.xyzreaderphong.injection.ArticleListViewModule;
 import dhbk.android.xyzreaderphong.injection.DaggerArticleListViewComponent;
@@ -74,7 +75,14 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
         if (mPresenter != null) {
             mPresenter.loadDataToRecyclerView();
         }
+
+        // if the first time the activity start (if condif change, it is not the first time)
+        if (mFirstStart) {
+            UpdaterService.startActionDownloadInfo(this);
+        }
     }
+
+    // TODO: 9/4/16 add broadcast receiver to listen when the network was called.
 
     @Override
     protected void setupComponent(@NonNull AppComponent parentComponent) {

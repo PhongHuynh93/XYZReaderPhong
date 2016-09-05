@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import dhbk.android.xyzreaderphong.injection.AppComponent;
 import dhbk.android.xyzreaderphong.injection.AppModule;
 import dhbk.android.xyzreaderphong.injection.DaggerAppComponent;
+import dhbk.android.xyzreaderphong.injection.RepositionModule;
+import dhbk.android.xyzreaderphong.injection.RetrofitModule;
 
 public final class App extends Application {
     private AppComponent mAppComponent;
@@ -16,6 +18,8 @@ public final class App extends Application {
 
         mAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
+                .repositionModule(new RepositionModule())
+                .retrofitModule(new RetrofitModule())
                 .build();
     }
 
