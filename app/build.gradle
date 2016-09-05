@@ -41,7 +41,6 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-
     // gson
     compile 'com.google.code.gson:gson:2.7'
     // rxjava + rxandroid
@@ -49,25 +48,23 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
     // sqlbrite + dao
     // http://hannesdorfmann.com/android/sqlbrite-dao
-     compile 'com.hannesdorfmann.sqlbrite:dao:0.6.1'
-     compile 'com.hannesdorfmann.sqlbrite:annotations:0.6.1'
-     apt 'com.hannesdorfmann.sqlbrite:object-mapper:0.6.1'
+    compile 'com.hannesdorfmann.sqlbrite:dao:0.6.1'
+    compile 'com.hannesdorfmann.sqlbrite:annotations:0.6.1'
+    apt 'com.hannesdorfmann.sqlbrite:object-mapper:0.6.1'
     // dagger 2
     compile 'com.google.dagger:dagger:2.6.1'
     apt 'com.google.dagger:dagger-compiler:2.6.1'
     provided 'javax.annotation:jsr250-api:1.0'
-
     // load image
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-
-//    material design
+    //    material design
     compile 'com.dmitrymalkovich.android:material-design-dimens:1.2'
-
     compile 'com.android.support:design:24.2.0'
     compile 'com.android.support:cardview-v7:24.2.0'
     compile 'com.android.support:recyclerview-v7:24.2.0'
-
     // lombok
-    compile "org.projectlombok:lombok:1.16.10"
+    compile 'org.projectlombok:lombok:1.16.10'
+    //    pallete
+    compile 'com.android.support:palette-v7:24.2.0'
 }

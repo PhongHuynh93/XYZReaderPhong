@@ -26,16 +26,16 @@ public class ItemTableDao extends Dao{
          *  create table with 4 column
          */
         CREATE_TABLE(
-                ItemsContract.TABLE_NAME,
-                ItemsContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT",
-                ItemsContract.TITLE + " TEXT NOT NULL",
-                ItemsContract.SERVER_ID + " TEXT",
-                ItemsContract.BODY + " TEXT NOT NULL",
-                ItemsContract.THUMB_URL + " TEXT NOT NULL",
-                ItemsContract.AUTHOR + " TEXT NOT NULL",
-                ItemsContract.PHOTO_URL + " TEXT NOT NULL",
-                ItemsContract.ASPECT_RATIO + " REAL NOT NULL DEFAULT 1.5",
-                ItemsContract.PUBLISHED_DATE + " TEXT"
+                XYZResponse.TABLE_NAME,
+                XYZResponse._ID + " INTEGER PRIMARY KEY AUTOINCREMENT",
+                XYZResponse.TITLE + " TEXT NOT NULL",
+                XYZResponse.SERVER_ID + " TEXT",
+                XYZResponse.BODY + " TEXT NOT NULL",
+                XYZResponse.THUMB_URL + " TEXT NOT NULL",
+                XYZResponse.AUTHOR + " TEXT NOT NULL",
+                XYZResponse.PHOTO_URL + " TEXT NOT NULL",
+                XYZResponse.ASPECT_RATIO + " REAL NOT NULL DEFAULT 1.5",
+                XYZResponse.PUBLISHED_DATE + " TEXT"
         ).execute(database);
         //                ItemsContract.PUBLISHED_DATE + " INTEGER NOT NULL DEFAULT 0"
 
@@ -56,18 +56,18 @@ public class ItemTableDao extends Dao{
 
     // add data to db
     public Observable<Long> insert(XYZResponse xyzResponse) {
-        ContentValues values = ItemsContractMapper.contentValues()
-                .mServerId(xyzResponse.getId())
-                .mTitle(xyzResponse.getTitle())
-                .mAuthor(xyzResponse.getAuthor())
-                .mBody(xyzResponse.getBody())
-                .mThumbUrl(xyzResponse.getThumb())
-                .mPhotoUrl(xyzResponse.getPhoto())
-                .mAspectRadio(xyzResponse.getAspectRatio())
-                .mPublishedDate(xyzResponse.getPublishedDate())
+        ContentValues values = XYZResponseMapper.contentValues()
+                .mServerId(xyzResponse.getMServerId())
+                .mTitle(xyzResponse.getMTitle())
+                .mAuthor(xyzResponse.getMAuthor())
+                .mBody(xyzResponse.getMBody())
+                .mThumbUrl(xyzResponse.getMThumbUrl())
+                .mPhotoUrl(xyzResponse.getMPhotoUrl())
+                .mAspectRadio(xyzResponse.getMAspectRadio())
+                .mPublishedDate(xyzResponse.getMPublishedDate())
                 .build();
 
-        return insert(ItemsContract.TABLE_NAME, values);
+        return insert(XYZResponse.TABLE_NAME, values);
     }
 
     public Observable<List<XYZResponse>> queryData() {
@@ -77,17 +77,17 @@ public class ItemTableDao extends Dao{
          */
         return query(
                 SELECT(
-                        ItemsContract._ID,
-                        ItemsContract.TITLE,
-                        ItemsContract.SERVER_ID,
-                        ItemsContract.BODY,
-                        ItemsContract.THUMB_URL,
-                        ItemsContract.AUTHOR,
-                        ItemsContract.PHOTO_URL,
-                        ItemsContract.ASPECT_RATIO,
-                        ItemsContract.PUBLISHED_DATE
-                ).FROM(ItemsContract.TABLE_NAME))
+                        XYZResponse._ID,
+                        XYZResponse.TITLE,
+                        XYZResponse.SERVER_ID,
+                        XYZResponse.BODY,
+                        XYZResponse.THUMB_URL,
+                        XYZResponse.AUTHOR,
+                        XYZResponse.PHOTO_URL,
+                        XYZResponse.ASPECT_RATIO,
+                        XYZResponse.PUBLISHED_DATE
+                ).FROM(XYZResponse.TABLE_NAME))
                 .run()
-                .mapToList(ItemsContractMapper.MAPPER);
+                .mapToList(XYZResponseMapper.MAPPER);
     }
 }
