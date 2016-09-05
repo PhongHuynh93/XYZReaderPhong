@@ -15,6 +15,11 @@ public interface ArticleListInteractor extends BaseInteractor {
      */
     void insertToDb(XYZResponse xyzResponse);
 
+    /**
+     * get list of data from database
+     */
+    void getDataFromDb();
+
     interface DownloadDataFromNetworkCallback {
         void onSuccess(List<XYZResponse> xyzResponse);
         void onFailed();

@@ -21,7 +21,7 @@ public class ItemTableDao extends Dao{
     @Override
     public void createTable(SQLiteDatabase database) {
         /**
-         * todo create table with 4 column
+         *  create table with 4 column
          */
         CREATE_TABLE(
                 ItemsContract.TABLE_NAME,

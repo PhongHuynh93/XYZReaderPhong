@@ -49,15 +49,15 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
     }
 
     /**
-     * todo call the interactor to load data from database to listview
+     *  call the interactor to load data from database to listview
      */
     @Override
     public void loadDataToRecyclerViewFromDb() {
-
+        mInteractor.getDataFromDb();
     }
 
     /**
-     * todo call the interactor to load data from network to listview
+     *  call the interactor to load data from network to listview
      */
     @Override
     public void loadDataToRecyclerViewFromNetwork() {
@@ -75,14 +75,12 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
             @Override
             public void onSuccess(List<XYZResponse> xyzResponse) {
                 // todo - update the list
+                mView.addNewDataToRecyclerview(xyzResponse);
 
-
-                // todo - save to db
+                //  - save to db
                 for (XYZResponse rowXyz : xyzResponse) {
                     mInteractor.insertToDb(rowXyz);
                 }
-
-
             }
 
             @Override

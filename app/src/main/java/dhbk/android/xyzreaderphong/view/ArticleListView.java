@@ -2,6 +2,10 @@ package dhbk.android.xyzreaderphong.view;
 
 import android.support.annotation.UiThread;
 
+import java.util.List;
+
+import dhbk.android.xyzreaderphong.interactor.XYZResponse;
+
 @UiThread
 public interface ArticleListView {
 
@@ -25,4 +29,10 @@ public interface ArticleListView {
      * show a toast to indicate that that there was something wrong when loading the data from network
      */
     void showFailLoadingDataMessage();
+
+    /**
+     * add list of data to adapter
+     * @param xyzResponse
+     */
+    void addNewDataToRecyclerview(List<XYZResponse> xyzResponse);
 }

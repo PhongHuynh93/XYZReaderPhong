@@ -51,7 +51,15 @@ public final class ArticleListInteractorImpl implements ArticleListInteractor {
      */
     @Override
     public void insertToDb(XYZResponse xyzResponse) {
-        // TODO: 9/5/16 insert to db
+        // : 9/5/16 insert to db
         mItemTableDao.insert(xyzResponse);
+    }
+
+    /**
+     * get list of data from database
+     */
+    @Override
+    public void getDataFromDb() {
+
     }
 }

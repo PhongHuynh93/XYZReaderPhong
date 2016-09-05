@@ -10,6 +10,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindInt;
@@ -20,11 +22,13 @@ import dhbk.android.xyzreaderphong.R;
 import dhbk.android.xyzreaderphong.injection.AppComponent;
 import dhbk.android.xyzreaderphong.injection.ArticleListViewModule;
 import dhbk.android.xyzreaderphong.injection.DaggerArticleListViewComponent;
+import dhbk.android.xyzreaderphong.interactor.XYZResponse;
 import dhbk.android.xyzreaderphong.presenter.ArticleListPresenter;
 import dhbk.android.xyzreaderphong.presenter.loader.PresenterFactory;
 import dhbk.android.xyzreaderphong.view.ArticleListView;
 
 public final class ArticleListActivity extends BaseActivity<ArticleListPresenter, ArticleListView> implements ArticleListView, SwipeRefreshLayout.OnRefreshListener {
+    private static final String FIRST_TIME_LOAD_DATA = "first_time";
     @Inject
     PresenterFactory<ArticleListPresenter> mPresenterFactory;
     @Inject
@@ -42,6 +46,7 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
     @BindString(R.string.all_fail_to_connect_to_network)
     String mFailToConnectToNetworkMessage;
 
+    private boolean mFirstTimeLoadData = true;
     // Your presenter is available using the mPresenter variable
 
     @Override
@@ -71,9 +76,8 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
         // set adapter
         mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);
-
-        // // TODO: 9/5/16 load db from database for the first time if not connect to network
     }
+
 
 
     @Override
@@ -86,11 +90,21 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
         }
 
         // if the first time the activity start (if condif change, it is not the first time)
-        if (mFirstStart) {
+        // load app from network
+        if (mFirstTimeLoadData) {
             if (mPresenter != null) {
                 mPresenter.loadDataToRecyclerViewFromNetwork();
             }
         }
+
+        mFirstTimeLoadData = false;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(FIRST_TIME_LOAD_DATA, mFirstTimeLoadData);
     }
 
     // TODO: 9/4/16 add broadcast receiver to listen when the network was called.
@@ -162,4 +176,8 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
         Toast.makeText(ArticleListActivity.this, mFailToConnectToNetworkMessage, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void addNewDataToRecyclerview(List<XYZResponse> xyzResponse) {
+        mAdapter.replaceAnotherData(xyzResponse);
+    }
 }
