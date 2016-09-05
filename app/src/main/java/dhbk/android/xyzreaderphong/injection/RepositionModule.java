@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import dhbk.android.xyzreaderphong.interactor.ItemTableDao;
-import dhbk.android.xyzreaderphong.interactor.ItemsContract;
+import dhbk.android.xyzreaderphong.interactor.XYZResponse;
 
 /**
  * Created by huynhducthanhphong on 9/4/16.
@@ -29,8 +29,8 @@ public final class RepositionModule {
         ItemTableDao itemTable = new ItemTableDao();
         // create database
         DaoManager.with(context)
-                .databaseName(ItemsContract.DB_NAME)
-                .version(ItemsContract.DB_VERSION)
+                .databaseName(XYZResponse.DB_NAME)
+                .version(XYZResponse.DB_VERSION)
                 .add(itemTable)
                 .logging(true)
                 .build();

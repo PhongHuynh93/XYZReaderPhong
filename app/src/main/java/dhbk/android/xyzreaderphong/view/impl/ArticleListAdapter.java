@@ -1,11 +1,20 @@
 package dhbk.android.xyzreaderphong.view.impl;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +27,7 @@ import dhbk.android.xyzreaderphong.interactor.XYZResponse;
  */
 public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.ViewHolder> {
 
-    private  Context mContext;
+    private Context mContext;
     private List<XYZResponse> mXYZList;
 
     public ArticleListAdapter(Context context) {
@@ -40,70 +49,43 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.titleView.setText(mXYZList.get(position).getTitle());
+        holder.titleView.setText(mXYZList.get(position).getMTitle());
+        holder.authorView.setText(mXYZList.get(position).getMAuthor());
+
+        // fixme - set the image depend on aspect radio
+        holder.thumbnailView.setAspectRatio((float) mXYZList.get(position).getMAspectRadio());
+
+        // clear the previous pending image
+        Glide.clear(holder.thumbnailView);
+
+        // load new image and cache this image
+        Glide.with(holder.thumbnailView.getContext())
+                .load(mXYZList.get(position).getMThumbUrl())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        Bitmap bitmap = ((GlideBitmapDrawable) resource.getCurrent()).getBitmap();
+                        Palette palette = Palette.generate(bitmap);
+                        int defaultColor = 0xFF333333;
+                        int color = palette.getDarkMutedColor(defaultColor);
+                        holder.itemView.setBackgroundColor(color);
+                        return false;
+                    }
+                })
+                .into(holder.thumbnailView);
     }
 
     @Override
     public int getItemCount() {
         return mXYZList.isEmpty() ? 0 : mXYZList.size();
     }
-
-//    @Override
-//    public void onBindViewHolder(final ViewHolder holder, final Cursor cursor) {
-//        holder.titleView.setText(cursor.getString(ArticleLoader.Query.TITLE));
-//        holder.subtitleView.setText(
-//                DateUtils.getRelativeTimeSpanString(
-//                        cursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
-//                        System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-//                        DateUtils.FORMAT_ABBREV_ALL).toString());
-//        holder.authorView.setText(cursor.getString(ArticleLoader.Query.AUTHOR));
-//        holder.thumbnailView.setAspectRatio(cursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
-//        Glide.clear(holder.thumbnailView);
-//        Glide.with(holder.thumbnailView.getContext())
-//                .load(cursor.getString(ArticleLoader.Query.THUMB_URL))
-//                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .dontAnimate()
-//                .listener(new RequestListener<String, GlideDrawable>() {
-//                    @Override
-//                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-//                        return false;
-//                    }
-//
-//                    @Override
-//                    public boolean onResourceReady(GlideDrawable resource, String model,
-//                                                   Target<GlideDrawable> target,
-//                                                   boolean isFromMemoryCache, boolean isFirstResource) {
-//                        Bitmap bitmap = ((GlideBitmapDrawable) resource.getCurrent()).getBitmap();
-//                        Palette palette = Palette.generate(bitmap);
-//                        int defaultColor = 0xFF333333;
-//                        int color = palette.getDarkMutedColor(defaultColor);
-//                        holder.itemView.setBackgroundColor(color);
-//                        return false;
-//                    }
-//                })
-//                .into(holder.thumbnailView);
-//    }
-//
-//    @Override
-//    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext())
-//                .inflate(R.layout.list_item_article, parent, false);
-//        final ViewHolder vh = new ViewHolder(view);
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                parent.getContext().startActivity(new Intent(Intent.ACTION_VIEW,
-//                        ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
-//            }
-//        });
-//        return vh;
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return super.getItemCount();
-//    }
-
 
     // replace artists data and notify change
     public void replaceAnotherData(List<XYZResponse> xyzResponses) {
