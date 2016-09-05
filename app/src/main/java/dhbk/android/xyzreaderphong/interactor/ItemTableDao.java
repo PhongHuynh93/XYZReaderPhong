@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.hannesdorfmann.sqlbrite.dao.Dao;
 
+import java.util.List;
+
 import rx.Observable;
 
 /**
@@ -33,9 +35,10 @@ public class ItemTableDao extends Dao{
                 ItemsContract.AUTHOR + " TEXT NOT NULL",
                 ItemsContract.PHOTO_URL + " TEXT NOT NULL",
                 ItemsContract.ASPECT_RATIO + " REAL NOT NULL DEFAULT 1.5",
-//                ItemsContract.PUBLISHED_DATE + " INTEGER NOT NULL DEFAULT 0"
                 ItemsContract.PUBLISHED_DATE + " TEXT"
         ).execute(database);
+        //                ItemsContract.PUBLISHED_DATE + " INTEGER NOT NULL DEFAULT 0"
+
     }
 
     /**
@@ -65,5 +68,26 @@ public class ItemTableDao extends Dao{
                 .build();
 
         return insert(ItemsContract.TABLE_NAME, values);
+    }
+
+    public Observable<List<XYZResponse>> queryData() {
+        /**
+         *  query the db to get the cursor
+         * translate cursor by mapToList (CustomerMapper.MAPPER is auto created)
+         */
+        return query(
+                SELECT(
+                        ItemsContract._ID,
+                        ItemsContract.TITLE,
+                        ItemsContract.SERVER_ID,
+                        ItemsContract.BODY,
+                        ItemsContract.THUMB_URL,
+                        ItemsContract.AUTHOR,
+                        ItemsContract.PHOTO_URL,
+                        ItemsContract.ASPECT_RATIO,
+                        ItemsContract.PUBLISHED_DATE
+                ).FROM(ItemsContract.TABLE_NAME))
+                .run()
+                .mapToList(ItemsContractMapper.MAPPER);
     }
 }

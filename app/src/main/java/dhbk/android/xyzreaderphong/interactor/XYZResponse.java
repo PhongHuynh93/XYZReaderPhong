@@ -9,6 +9,10 @@ import lombok.Getter;
  * Created by huynhducthanhphong on 9/4/16.
  */
 public class XYZResponse {
+    public static final String DB_NAME = "XYZ_reader_database";
+    public static final int DB_VERSION = 1;
+
+    public static final String TABLE_NAME = "items";
 
     @SerializedName("id")
     @Expose

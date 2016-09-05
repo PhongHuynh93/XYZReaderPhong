@@ -2,6 +2,8 @@ package dhbk.android.xyzreaderphong.interactor;
 
 import java.util.List;
 
+import rx.Observable;
+
 public interface ArticleListInteractor extends BaseInteractor {
     /**
      * download data from network
@@ -18,7 +20,7 @@ public interface ArticleListInteractor extends BaseInteractor {
     /**
      * get list of data from database
      */
-    void getDataFromDb();
+    Observable<List<XYZResponse>> getDataFromDb();
 
     interface DownloadDataFromNetworkCallback {
         void onSuccess(List<XYZResponse> xyzResponse);
