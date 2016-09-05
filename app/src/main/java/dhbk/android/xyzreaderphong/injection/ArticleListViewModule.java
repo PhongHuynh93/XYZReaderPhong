@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 import dhbk.android.xyzreaderphong.interactor.ArticleListInteractor;
+import dhbk.android.xyzreaderphong.interactor.ItemTableDao;
+import dhbk.android.xyzreaderphong.interactor.XYZApiService;
 import dhbk.android.xyzreaderphong.interactor.impl.ArticleListInteractorImpl;
 import dhbk.android.xyzreaderphong.presenter.ArticleListPresenter;
 import dhbk.android.xyzreaderphong.presenter.impl.ArticleListPresenterImpl;
@@ -14,8 +16,8 @@ import dhbk.android.xyzreaderphong.view.impl.ArticleListAdapter;
 @Module
 public final class ArticleListViewModule {
     @Provides
-    public ArticleListInteractor provideInteractor() {
-        return new ArticleListInteractorImpl();
+    public ArticleListInteractor provideInteractor(XYZApiService xyzApiService, ItemTableDao itemTableDao) {
+        return new ArticleListInteractorImpl(xyzApiService, itemTableDao);
     }
 
     @Provides

@@ -1,5 +1,7 @@
 package dhbk.android.xyzreaderphong.interactor;
 
+import java.util.List;
+
 import dhbk.android.xyzreaderphong.Constant;
 import retrofit2.http.GET;
 import rx.Observable;
@@ -11,5 +13,5 @@ import rx.Observable;
  */
 public interface XYZApiService {
     @GET(Constant.END_POINT)
-    Observable<XYZResponse> searchXYZ();
+    Observable<List<XYZResponse>> searchXYZ();
 }

@@ -1,15 +1,18 @@
 package dhbk.android.xyzreaderphong.interactor;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.hannesdorfmann.sqlbrite.dao.Dao;
+
+import rx.Observable;
 
 /**
  * Created by huynhducthanhphong on 9/4/16.
  *
  * this is a table
  */
-public class ItemTable extends Dao{
+public class ItemTableDao extends Dao{
     /**
      * Create here the database table for the given dao
      *
@@ -30,7 +33,8 @@ public class ItemTable extends Dao{
                 ItemsContract.AUTHOR + " TEXT NOT NULL",
                 ItemsContract.PHOTO_URL + " TEXT NOT NULL",
                 ItemsContract.ASPECT_RATIO + " REAL NOT NULL DEFAULT 1.5",
-                ItemsContract.PUBLISHED_DATE + " INTEGER NOT NULL DEFAULT 0"
+//                ItemsContract.PUBLISHED_DATE + " INTEGER NOT NULL DEFAULT 0"
+                ItemsContract.PUBLISHED_DATE + " TEXT"
         ).execute(database);
     }
 
@@ -47,6 +51,19 @@ public class ItemTable extends Dao{
 
     }
 
-    // TODO: 9/4/16 implement the method which interacts with the db
+    // add data to db
+    public Observable<Long> insert(XYZResponse xyzResponse) {
+        ContentValues values = ItemsContractMapper.contentValues()
+                .mServerId(xyzResponse.getId())
+                .mTitle(xyzResponse.getTitle())
+                .mAuthor(xyzResponse.getAuthor())
+                .mBody(xyzResponse.getBody())
+                .mThumbUrl(xyzResponse.getThumb())
+                .mPhotoUrl(xyzResponse.getPhoto())
+                .mAspectRadio(xyzResponse.getAspectRatio())
+                .mPublishedDate(xyzResponse.getPublishedDate())
+                .build();
 
+        return insert(ItemsContract.TABLE_NAME, values);
+    }
 }

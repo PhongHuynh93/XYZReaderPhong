@@ -16,6 +16,5 @@ public class XYZApiAdapter {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
-
     }
 }

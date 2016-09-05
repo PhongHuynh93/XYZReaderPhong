@@ -39,6 +39,8 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
     int columnCount;
     @BindString(R.string.all_not_connect_to_network)
     String mNotConnectToNetworkMessage;
+    @BindString(R.string.all_fail_to_connect_to_network)
+    String mFailToConnectToNetworkMessage;
 
     // Your presenter is available using the mPresenter variable
 
@@ -88,7 +90,6 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
             if (mPresenter != null) {
                 mPresenter.loadDataToRecyclerViewFromNetwork();
             }
-//            UpdaterService.startActionDownloadInfo(this);
         }
     }
 
@@ -136,4 +137,29 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
             return true;
         }
     }
+
+    /**
+     * show the refresh indicator
+     */
+    @Override
+    public void showRefreshIndicator() {
+        mSwipeRefreshLayout.setRefreshing(true);
+    }
+
+    /**
+     * stop showing refresh indicator
+     */
+    @Override
+    public void stopShowRefreshIndicator() {
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    /**
+     * show a toast to indicate that that there was something wrong when loading the data from network
+     */
+    @Override
+    public void showFailLoadingDataMessage() {
+        Toast.makeText(ArticleListActivity.this, mFailToConnectToNetworkMessage, Toast.LENGTH_SHORT).show();
+    }
+
 }

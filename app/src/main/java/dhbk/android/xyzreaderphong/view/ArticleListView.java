@@ -10,4 +10,19 @@ public interface ArticleListView {
      * @return
      */
     boolean isConnectedToNetwork();
+
+    /**
+     * show the refresh indicator
+     */
+    void showRefreshIndicator();
+
+    /**
+     * stop showing refresh indicator
+     */
+    void stopShowRefreshIndicator();
+
+    /**
+     * show a toast to indicate that that there was something wrong when loading the data from network
+     */
+    void showFailLoadingDataMessage();
 }

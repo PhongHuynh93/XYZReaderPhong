@@ -2,6 +2,8 @@ package dhbk.android.xyzreaderphong.presenter.impl;
 
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import dhbk.android.xyzreaderphong.interactor.ArticleListInteractor;
@@ -17,7 +19,6 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
     private final ArticleListInteractor mInteractor;
 
     // The view is available using the mView variable
-
     @Inject
     public ArticleListPresenterImpl(@NonNull ArticleListInteractor interactor) {
         mInteractor = interactor;
@@ -62,25 +63,35 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
     public void loadDataToRecyclerViewFromNetwork() {
         // todo - check the network
         // check network connection
+        if (mView != null && !mView.isConnectedToNetwork()) {
+            return;
+        }
+
         if (mView != null) {
-            if (mView.isConnectedToNetwork()) {
-
-            } else {
-
-            }
+            mView.showRefreshIndicator();
         }
 
         mInteractor.downloadDataFromNetwork(new ArticleListInteractor.DownloadDataFromNetworkCallback() {
             @Override
-            public void onSuccess(XYZResponse xyzResponse) {
+            public void onSuccess(List<XYZResponse> xyzResponse) {
+                // todo - update the list
+
+
                 // todo - save to db
-                // todo - upate the list
+                for (XYZResponse rowXyz : xyzResponse) {
+                    mInteractor.insertToDb(rowXyz);
+                }
+
+
             }
 
             @Override
             public void onFailed() {
                 // todo - show toast
+                mView.showFailLoadingDataMessage();
             }
         });
+
+        mView.stopShowRefreshIndicator();
     }
 }

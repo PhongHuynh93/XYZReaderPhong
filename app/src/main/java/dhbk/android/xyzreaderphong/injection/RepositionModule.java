@@ -4,9 +4,11 @@ import android.content.Context;
 
 import com.hannesdorfmann.sqlbrite.dao.DaoManager;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
-import dhbk.android.xyzreaderphong.interactor.ItemTable;
+import dhbk.android.xyzreaderphong.interactor.ItemTableDao;
 import dhbk.android.xyzreaderphong.interactor.ItemsContract;
 
 /**
@@ -15,22 +17,20 @@ import dhbk.android.xyzreaderphong.interactor.ItemsContract;
  */
 @Module
 public final class RepositionModule {
-
-    public RepositionModule() {
-    }
-
     /**
      * provides table used in this project
+     *
      * @return
      */
-    @Local
+//    @Local
     @Provides
-    public ItemTable providesTable(Context context) {
-        ItemTable itemTable = new ItemTable();
+    @Singleton
+    public ItemTableDao providesTable(Context context) {
+        ItemTableDao itemTable = new ItemTableDao();
         // create database
         DaoManager.with(context)
                 .databaseName(ItemsContract.DB_NAME)
-                .version(1)
+                .version(ItemsContract.DB_VERSION)
                 .add(itemTable)
                 .logging(true)
                 .build();

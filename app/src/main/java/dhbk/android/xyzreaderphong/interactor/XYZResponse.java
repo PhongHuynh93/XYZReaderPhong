@@ -9,6 +9,7 @@ import lombok.Getter;
  * Created by huynhducthanhphong on 9/4/16.
  */
 public class XYZResponse {
+
     @SerializedName("id")
     @Expose
     @Getter
@@ -41,4 +42,5 @@ public class XYZResponse {
     @Expose
     @Getter
     private String body;
+
 }

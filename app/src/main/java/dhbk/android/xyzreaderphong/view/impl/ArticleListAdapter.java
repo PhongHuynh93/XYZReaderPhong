@@ -1,87 +1,120 @@
 package dhbk.android.xyzreaderphong.view.impl;
 
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import java.util.ArrayList;
+import java.util.List;
 
 import dhbk.android.xyzreaderphong.R;
-import dhbk.android.xyzreaderphong.interactor.ItemsContract;
+import dhbk.android.xyzreaderphong.interactor.XYZResponse;
 
 /**
  * Created by huynhducthanhphong on 9/4/16.
  */
-public class ArticleListAdapter extends CursorRecyclerViewAdapter<ArticleListAdapter.ViewHolder> {
-    public ArticleListAdapter(Cursor cursor) {
-        super(cursor);
+public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.ViewHolder> {
+
+    private  Context mContext;
+    private List<XYZResponse> mXYZList;
+
+    public ArticleListAdapter(Context context) {
+        mContext = context;
+        mXYZList = new ArrayList<>(); // create an empty list
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final Cursor cursor) {
-        holder.titleView.setText(cursor.getString(ArticleLoader.Query.TITLE));
-        holder.subtitleView.setText(
-                DateUtils.getRelativeTimeSpanString(
-                        cursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
-                        System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                        DateUtils.FORMAT_ABBREV_ALL).toString());
-        holder.authorView.setText(cursor.getString(ArticleLoader.Query.AUTHOR));
-        holder.thumbnailView.setAspectRatio(cursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
-        Glide.clear(holder.thumbnailView);
-        Glide.with(holder.thumbnailView.getContext())
-                .load(cursor.getString(ArticleLoader.Query.THUMB_URL))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .dontAnimate()
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model,
-                                                   Target<GlideDrawable> target,
-                                                   boolean isFromMemoryCache, boolean isFirstResource) {
-                        Bitmap bitmap = ((GlideBitmapDrawable) resource.getCurrent()).getBitmap();
-                        Palette palette = Palette.generate(bitmap);
-                        int defaultColor = 0xFF333333;
-                        int color = palette.getDarkMutedColor(defaultColor);
-                        holder.itemView.setBackgroundColor(color);
-                        return false;
-                    }
-                })
-                .into(holder.thumbnailView);
+        // Inflate the custom layout
+        View contactView = inflater.inflate(R.layout.list_item_article, parent, false);
+
+        // Return a new holder instance
+        return new ViewHolder(contactView);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_article, parent, false);
-        final ViewHolder vh = new ViewHolder(view);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                parent.getContext().startActivity(new Intent(Intent.ACTION_VIEW,
-                        ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
-            }
-        });
-        return vh;
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.titleView.setText(mXYZList.get(position).getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return super.getItemCount();
+        return mXYZList.isEmpty() ? 0 : mXYZList.size();
+    }
+
+//    @Override
+//    public void onBindViewHolder(final ViewHolder holder, final Cursor cursor) {
+//        holder.titleView.setText(cursor.getString(ArticleLoader.Query.TITLE));
+//        holder.subtitleView.setText(
+//                DateUtils.getRelativeTimeSpanString(
+//                        cursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
+//                        System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+//                        DateUtils.FORMAT_ABBREV_ALL).toString());
+//        holder.authorView.setText(cursor.getString(ArticleLoader.Query.AUTHOR));
+//        holder.thumbnailView.setAspectRatio(cursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
+//        Glide.clear(holder.thumbnailView);
+//        Glide.with(holder.thumbnailView.getContext())
+//                .load(cursor.getString(ArticleLoader.Query.THUMB_URL))
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .dontAnimate()
+//                .listener(new RequestListener<String, GlideDrawable>() {
+//                    @Override
+//                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+//                        return false;
+//                    }
+//
+//                    @Override
+//                    public boolean onResourceReady(GlideDrawable resource, String model,
+//                                                   Target<GlideDrawable> target,
+//                                                   boolean isFromMemoryCache, boolean isFirstResource) {
+//                        Bitmap bitmap = ((GlideBitmapDrawable) resource.getCurrent()).getBitmap();
+//                        Palette palette = Palette.generate(bitmap);
+//                        int defaultColor = 0xFF333333;
+//                        int color = palette.getDarkMutedColor(defaultColor);
+//                        holder.itemView.setBackgroundColor(color);
+//                        return false;
+//                    }
+//                })
+//                .into(holder.thumbnailView);
+//    }
+//
+//    @Override
+//    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+//        View view = LayoutInflater.from(parent.getContext())
+//                .inflate(R.layout.list_item_article, parent, false);
+//        final ViewHolder vh = new ViewHolder(view);
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                parent.getContext().startActivity(new Intent(Intent.ACTION_VIEW,
+//                        ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
+//            }
+//        });
+//        return vh;
+//    }
+//
+//    @Override
+//    public int getItemCount() {
+//        return super.getItemCount();
+//    }
+
+
+    // replace artists data and notify change
+    public void replaceAnotherData(List<XYZResponse> xyzResponses) {
+        mXYZList = xyzResponses;
+        notifyDataSetChanged();
+    }
+
+    // clear the recyclerview
+    public void clear() {
+        mXYZList.clear();
+        notifyDataSetChanged();
     }
 
 
@@ -99,4 +132,5 @@ public class ArticleListAdapter extends CursorRecyclerViewAdapter<ArticleListAda
             authorView = (TextView) view.findViewById(R.id.article_author);
         }
     }
+
 }

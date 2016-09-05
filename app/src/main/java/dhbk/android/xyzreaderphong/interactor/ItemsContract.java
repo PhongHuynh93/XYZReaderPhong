@@ -7,12 +7,13 @@ import com.hannesdorfmann.sqlbrite.objectmapper.annotation.ObjectMappable;
  * 7 - make an constract, contains columns for db
  */
 @ObjectMappable
-public class ItemsContract {
+public class ItemsContract  {
     public static final String DB_NAME = "XYZ_reader_database";
+    public static final int DB_VERSION = 1;
 
     public static final String TABLE_NAME = "items";
 
-    //     7b - the column for this table
+    //     7b - the column for this table, so if you want to add to column (use this name)
     /**
      * Type: INTEGER PRIMARY KEY AUTOINCREMENT
      */
@@ -20,7 +21,7 @@ public class ItemsContract {
     /**
      * Type: TEXT
      */
-    public static final String SERVER_ID = "server_id";
+    public static final String SERVER_ID = "id";
     /**
      * Type: TEXT NOT NULL
      */
@@ -68,5 +69,5 @@ public class ItemsContract {
     @Column(ASPECT_RATIO)
     double mAspectRadio;
     @Column(PUBLISHED_DATE)
-    int mPublishedDate;
+    String mPublishedDate;
 }
