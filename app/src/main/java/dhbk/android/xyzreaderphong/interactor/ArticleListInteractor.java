@@ -20,4 +20,19 @@ public interface ArticleListInteractor extends BaseInteractor {
      * get list of data from database
      */
     Observable<List<XYZResponse>> getDataFromDb();
+
+    /**
+     * remove all datas in db
+     */
+    void removeOldData();
+
+    /**
+     * start the transaction before insert a large data in db
+     */
+    void startTransaction();
+
+    /**
+     * stop the transaction even it is a successful or fail transaction.
+     */
+    void endTransaction();
 }

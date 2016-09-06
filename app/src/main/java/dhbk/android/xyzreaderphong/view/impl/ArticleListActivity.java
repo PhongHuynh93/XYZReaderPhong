@@ -141,6 +141,7 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
      */
     @Override
     public boolean isConnectedToNetwork() {
+        // todo - add the connect time out
         // check network connection
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();

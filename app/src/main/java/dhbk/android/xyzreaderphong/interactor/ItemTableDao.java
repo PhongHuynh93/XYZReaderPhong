@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.hannesdorfmann.sqlbrite.dao.Dao;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ import rx.Observable;
  * this is a table
  */
 public class ItemTableDao extends Dao{
+    private BriteDatabase.Transaction mTransaction;
+
     /**
      * Create here the database table for the given dao
      *
@@ -55,6 +58,7 @@ public class ItemTableDao extends Dao{
     }
 
     // add data to db
+
     public Observable<Long> insert(XYZResponse xyzResponse) {
         ContentValues values = XYZResponseMapper.contentValues()
                 .mServerId(xyzResponse.getMServerId())
@@ -89,5 +93,17 @@ public class ItemTableDao extends Dao{
                 ).FROM(XYZResponse.TABLE_NAME))
                 .run()
                 .mapToList(XYZResponseMapper.MAPPER);
+    }
+
+    public void startTransaction() {
+        mTransaction = newTransaction();
+    }
+
+    public void endTransaction() {
+        mTransaction.end();
+    }
+
+    public void removeOldData() {
+
     }
 }

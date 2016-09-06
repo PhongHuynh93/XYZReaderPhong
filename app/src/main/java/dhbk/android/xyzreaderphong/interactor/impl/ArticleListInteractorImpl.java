@@ -39,6 +39,7 @@ public final class ArticleListInteractorImpl implements ArticleListInteractor {
         return mItemTableDao.insert(xyzResponse);
     }
 
+//    add delete database
 
     /**
      * get list of data from database
@@ -46,5 +47,29 @@ public final class ArticleListInteractorImpl implements ArticleListInteractor {
     @Override
     public Observable<List<XYZResponse>> getDataFromDb() {
         return mItemTableDao.queryData();
+    }
+
+    /**
+     * remove all datas in db
+     */
+    @Override
+    public void removeOldData() {
+        mItemTableDao.removeOldData();
+    }
+
+    /**
+     * start the transaction before insert a large data in db
+     */
+    @Override
+    public void startTransaction() {
+        mItemTableDao.startTransaction();
+    }
+
+    /**
+     * stop the transaction even it is a successful or fail transaction.
+     */
+    @Override
+    public void endTransaction() {
+        mItemTableDao.endTransaction();
     }
 }
