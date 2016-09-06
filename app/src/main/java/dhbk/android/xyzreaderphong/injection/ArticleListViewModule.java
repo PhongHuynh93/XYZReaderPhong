@@ -1,5 +1,6 @@
 package dhbk.android.xyzreaderphong.injection;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import dagger.Module;
@@ -15,6 +16,12 @@ import dhbk.android.xyzreaderphong.view.impl.ArticleListAdapter;
 
 @Module
 public final class ArticleListViewModule {
+    private final Context mActivityContext;
+
+    public ArticleListViewModule(Context activityContext) {
+        mActivityContext = activityContext;
+    }
+
     @Provides
     public ArticleListInteractor provideInteractor(XYZApiService xyzApiService, ItemTableDao itemTableDao) {
         return new ArticleListInteractorImpl(xyzApiService, itemTableDao);
@@ -22,17 +29,11 @@ public final class ArticleListViewModule {
 
     @Provides
     public PresenterFactory<ArticleListPresenter> providePresenterFactory(@NonNull final ArticleListInteractor interactor) {
-        return new PresenterFactory<ArticleListPresenter>() {
-            @NonNull
-            @Override
-            public ArticleListPresenter create() {
-                return new ArticleListPresenterImpl(interactor);
-            }
-        };
+        return () -> new ArticleListPresenterImpl(interactor);
     }
 
     @Provides
     public ArticleListAdapter provideArticleListAdapter() {
-        return new ArticleListAdapter(null);
+        return new ArticleListAdapter(mActivityContext);
     }
 }

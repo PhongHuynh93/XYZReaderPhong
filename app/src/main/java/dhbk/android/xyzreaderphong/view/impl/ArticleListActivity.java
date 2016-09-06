@@ -113,7 +113,7 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
     protected void setupComponent(@NonNull AppComponent parentComponent) {
         DaggerArticleListViewComponent.builder()
                 .appComponent(parentComponent)
-                .articleListViewModule(new ArticleListViewModule())
+                .articleListViewModule(new ArticleListViewModule(this))
                 .build()
                 .inject(this);
     }
