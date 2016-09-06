@@ -109,51 +109,6 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
             mView.showRefreshIndicator();
         }
 
-//        Subscription downloadDataFromNetworkSubscription = mInteractor.downloadDataFromNetwork()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<List<XYZResponse>>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        //  - show toast
-//                        if (mView != null) {
-//                            mView.showFailLoadingDataMessage();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<XYZResponse> xyzResponses) {
-////                        -update the list
-//                        if (mView != null) {
-//                            mView.addNewDataToRecyclerview(xyzResponses);
-//                        }
-//
-//                        //  - save to db
-//                        mInteractor.startTransaction();
-//                        try {
-//                            for (XYZResponse rowXyz : xyzResponses) {
-////                            todo - remove the old data from db
-//
-//                                // : 9/6/16 - add this to compositesubcription
-//                                mCompositeSubscription.add(mInteractor.insertToDb(rowXyz)
-//                                        .subscribeOn(Schedulers.io())
-//                                        .observeOn(AndroidSchedulers.mainThread())
-//                                        .subscribe(aLong -> {
-//
-//                                        }));
-//
-//                            }
-//                        } finally {
-//                            mInteractor.endTransaction();
-//
-//                        }
-//                    }
-//                });
         Subscription downloadDataFromNetworkSubscription = mInteractor.downloadDataFromNetwork()
                 .subscribeOn(Schedulers.io())
                 .doOnNext(xyzResponses -> mInteractor.removeOldData())

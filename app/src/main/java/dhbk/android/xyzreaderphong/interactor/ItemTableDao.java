@@ -103,7 +103,10 @@ public class ItemTableDao extends Dao{
         mTransaction.end();
     }
 
-    public void removeOldData() {
-
+    /**
+     * Deletes all rows from a table
+     */
+    public Observable<Integer> removeOldData() {
+        return delete(XYZResponse.TABLE_NAME);
     }
 }

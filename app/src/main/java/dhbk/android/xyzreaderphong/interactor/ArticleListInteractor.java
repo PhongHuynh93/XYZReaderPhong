@@ -24,7 +24,7 @@ public interface ArticleListInteractor extends BaseInteractor {
     /**
      * remove all datas in db
      */
-    void removeOldData();
+    Observable<Integer> removeOldData();
 
     /**
      * start the transaction before insert a large data in db

@@ -53,8 +53,8 @@ public final class ArticleListInteractorImpl implements ArticleListInteractor {
      * remove all datas in db
      */
     @Override
-    public void removeOldData() {
-        mItemTableDao.removeOldData();
+    public Observable<Integer> removeOldData() {
+        return mItemTableDao.removeOldData();
     }
 
     /**
