@@ -9,6 +9,7 @@ import lombok.Getter;
 
 /**
  * Created by huynhducthanhphong on 9/4/16.
+ * contains field as well as key for column in table
  */
 @ObjectMappable
 public class XYZResponse {
