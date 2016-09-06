@@ -20,30 +20,6 @@ public final class ArticleListInteractorImpl implements ArticleListInteractor {
         mItemTableDao = itemTableDao;
     }
 
-//    @Override
-//    public void downloadDataFromNetwork(DownloadDataFromNetworkCallback callback) {
-//        mXyzApiService.searchXYZ()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<List<XYZResponse>>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<XYZResponse> xyzResponse) {
-//                        callback.onSuccess(xyzResponse);
-//                    }
-//                });
-//    }
-
-
     /**
      * download data from network
      *
@@ -61,25 +37,6 @@ public final class ArticleListInteractorImpl implements ArticleListInteractor {
     public Observable<Long> insertToDb(XYZResponse xyzResponse) {
         // : 9/5/16 insert to db
         return mItemTableDao.insert(xyzResponse);
-//        mItemTableDao.insert(xyzResponse)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<Long>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(Long aLong) {
-//
-//                    }
-//                });
     }
 
 

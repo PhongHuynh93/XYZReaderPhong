@@ -20,9 +20,4 @@ public interface ArticleListInteractor extends BaseInteractor {
      * get list of data from database
      */
     Observable<List<XYZResponse>> getDataFromDb();
-
-    interface DownloadDataFromNetworkCallback {
-        void onSuccess(List<XYZResponse> xyzResponse);
-        void onFailed();
-    }
 }
