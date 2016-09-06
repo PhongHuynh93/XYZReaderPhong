@@ -10,6 +10,7 @@ import dhbk.android.xyzreaderphong.interactor.ArticleListInteractor;
 import dhbk.android.xyzreaderphong.interactor.XYZResponse;
 import dhbk.android.xyzreaderphong.presenter.ArticleListPresenter;
 import dhbk.android.xyzreaderphong.view.ArticleListView;
+import hugo.weaving.DebugLog;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -93,11 +94,14 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
     /**
      * call the interactor to load data from network to listview
      */
+    @DebugLog
     @Override
     public void loadDataToRecyclerViewFromNetwork() {
 //          - check the network
         // check network connection
         if (mView != null && !mView.isConnectedToNetwork()) {
+            // TODO: 9/6/16 register the view the listen when the network is on
+            mView.stopShowRefreshIndicator();
             return;
         }
 
@@ -105,56 +109,70 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
             mView.showRefreshIndicator();
         }
 
+//        Subscription downloadDataFromNetworkSubscription = mInteractor.downloadDataFromNetwork()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<List<XYZResponse>>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        //  - show toast
+//                        if (mView != null) {
+//                            mView.showFailLoadingDataMessage();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<XYZResponse> xyzResponses) {
+////                        -update the list
+//                        if (mView != null) {
+//                            mView.addNewDataToRecyclerview(xyzResponses);
+//                        }
+//
+//                        //  - save to db
+//                        mInteractor.startTransaction();
+//                        try {
+//                            for (XYZResponse rowXyz : xyzResponses) {
+////                            todo - remove the old data from db
+//
+//                                // : 9/6/16 - add this to compositesubcription
+//                                mCompositeSubscription.add(mInteractor.insertToDb(rowXyz)
+//                                        .subscribeOn(Schedulers.io())
+//                                        .observeOn(AndroidSchedulers.mainThread())
+//                                        .subscribe(aLong -> {
+//
+//                                        }));
+//
+//                            }
+//                        } finally {
+//                            mInteractor.endTransaction();
+//
+//                        }
+//                    }
+//                });
         Subscription downloadDataFromNetworkSubscription = mInteractor.downloadDataFromNetwork()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<XYZResponse>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        //  - show toast
-                        if (mView != null) {
-                            mView.showFailLoadingDataMessage();
-                        }
-                    }
-
-                    @Override
-                    public void onNext(List<XYZResponse> xyzResponses) {
-//                        -update the list
-                        if (mView != null) {
-                            mView.addNewDataToRecyclerview(xyzResponses);
-                        }
-
-                        //  - save to db
+                .doOnNext(xyzResponses -> mInteractor.removeOldData())
+                .doOnNext(xyzResponses -> {
+                    mInteractor.startTransaction();
+                    try {
                         for (XYZResponse rowXyz : xyzResponses) {
-//                            todo - remove the old data from db
-
-                            // : 9/6/16 - add this to compositesubcription
-                            mCompositeSubscription.add(mInteractor.insertToDb(rowXyz)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new Observer<Long>() {
-                                        @Override
-                                        public void onCompleted() {
-
-                                        }
-
-                                        @Override
-                                        public void onError(Throwable e) {
-
-                                        }
-
-                                        @Override
-                                        public void onNext(Long aLong) {
-
-                                        }
-                                    }));
-
+                            mInteractor.insertToDb(rowXyz);
                         }
+                    } finally {
+                        mInteractor.endTransaction();
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(xyzResponses -> {
+//                        -update the list
+                    if (mView != null) {
+                        mView.stopShowRefreshIndicator();
+                        mView.addNewDataToRecyclerview(xyzResponses);
                     }
                 });
         mCompositeSubscription.add(downloadDataFromNetworkSubscription);
