@@ -10,6 +10,11 @@ import dhbk.android.xyzreaderphong.interactor.ArticleListInteractor;
 import dhbk.android.xyzreaderphong.interactor.XYZResponse;
 import dhbk.android.xyzreaderphong.presenter.ArticleListPresenter;
 import dhbk.android.xyzreaderphong.view.ArticleListView;
+import rx.Observer;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleListView> implements ArticleListPresenter {
     /**
@@ -17,6 +22,9 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
      */
     @NonNull
     private final ArticleListInteractor mInteractor;
+
+    private CompositeSubscription mCompositeSubscription;
+
 
     // The view is available using the mView variable
     @Inject
@@ -29,6 +37,8 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
         super.onStart(firstStart);
 
         // Your code here. Your view is available using mView and will not be null until next onStop()
+        mCompositeSubscription = new CompositeSubscription();
+
     }
 
     @Override
@@ -44,24 +54,48 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
          * Your code here. After this method, your presenter (and view) will be completely destroyed
          * so make sure to cancel any HTTP call or database connection
          */
-
+        if (mCompositeSubscription != null) {
+            mCompositeSubscription.clear();
+        }
         super.onPresenterDestroyed();
     }
 
     /**
-     *  call the interactor to load data from database to listview
+     * call the interactor to load data from database to listview
+     * todo - fixme fix this to load from database
      */
     @Override
     public void loadDataToRecyclerViewFromDb() {
-        mInteractor.getDataFromDb();
+        Subscription getDataFromDbSubcription = mInteractor.getDataFromDb()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<XYZResponse>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<XYZResponse> xyzResponses) {
+                        if (mView != null) {
+                            mView.addNewDataToRecyclerview(xyzResponses);
+                        }
+                    }
+                });
+        mCompositeSubscription.add(getDataFromDbSubcription);
     }
 
     /**
-     *  call the interactor to load data from network to listview
+     * call the interactor to load data from network to listview
      */
     @Override
     public void loadDataToRecyclerViewFromNetwork() {
-        //  - check the network
+//          - check the network
         // check network connection
         if (mView != null && !mView.isConnectedToNetwork()) {
             return;
@@ -71,25 +105,56 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
             mView.showRefreshIndicator();
         }
 
-        mInteractor.downloadDataFromNetwork(new ArticleListInteractor.DownloadDataFromNetworkCallback() {
-            @Override
-            public void onSuccess(List<XYZResponse> xyzResponse) {
-                //  - update the list
-                mView.addNewDataToRecyclerview(xyzResponse);
+        Subscription downloadDataFromNetworkSubscription = mInteractor.downloadDataFromNetwork()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<XYZResponse>>() {
+                    @Override
+                    public void onCompleted() {
 
-                //  - save to db
-                for (XYZResponse rowXyz : xyzResponse) {
-                    mInteractor.insertToDb(rowXyz);
-                }
-            }
+                    }
 
-            @Override
-            public void onFailed() {
-                //  - show toast
-                mView.showFailLoadingDataMessage();
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        //  - show toast
+                        if (mView != null) {
+                            mView.showFailLoadingDataMessage();
+                        }
+                    }
 
-        mView.stopShowRefreshIndicator();
+                    @Override
+                    public void onNext(List<XYZResponse> xyzResponses) {
+//                        -update the list
+                        if (mView != null) {
+                            mView.addNewDataToRecyclerview(xyzResponses);
+                        }
+
+                        //  - save to db
+                        for (XYZResponse rowXyz : xyzResponses) {
+                            // TODO: 9/6/16 - add this to compositesubcription
+                            mCompositeSubscription.add(mInteractor.insertToDb(rowXyz)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Observer<Long>() {
+                                        @Override
+                                        public void onCompleted() {
+
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(Long aLong) {
+
+                                        }
+                                    }));
+
+                        }
+                    }
+                });
+        mCompositeSubscription.add(downloadDataFromNetworkSubscription);
     }
 }

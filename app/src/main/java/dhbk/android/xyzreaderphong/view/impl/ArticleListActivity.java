@@ -84,7 +84,7 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
     protected void onStart() {
         super.onStart();
 
-        // load data to recyclerview
+        // todo - get the data from db + load data to recyclerview
         if (mPresenter != null) {
             mPresenter.loadDataToRecyclerViewFromDb();
         }

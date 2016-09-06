@@ -7,15 +7,14 @@ import rx.Observable;
 public interface ArticleListInteractor extends BaseInteractor {
     /**
      * download data from network
-     * @param callback to invoke the presenter if success or failed when loading data
      */
-    void downloadDataFromNetwork(DownloadDataFromNetworkCallback callback);
+    Observable<List<XYZResponse>> downloadDataFromNetwork();
 
     /**
      * insert xyzResponse to the database
      * @param xyzResponse
      */
-    void insertToDb(XYZResponse xyzResponse);
+    Observable<Long> insertToDb(XYZResponse xyzResponse);
 
     /**
      * get list of data from database
