@@ -62,7 +62,7 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
 
     /**
      * call the interactor to load data from database to listview
-     * todo - fixme fix this to load from database
+     * fix this to load from database
      */
     @Override
     public void loadDataToRecyclerViewFromDb() {
@@ -131,7 +131,9 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
 
                         //  - save to db
                         for (XYZResponse rowXyz : xyzResponses) {
-                            // TODO: 9/6/16 - add this to compositesubcription
+//                            todo - remove the old data from db
+
+                            // : 9/6/16 - add this to compositesubcription
                             mCompositeSubscription.add(mInteractor.insertToDb(rowXyz)
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
