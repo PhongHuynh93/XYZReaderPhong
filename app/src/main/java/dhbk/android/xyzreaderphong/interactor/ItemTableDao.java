@@ -14,6 +14,8 @@ import rx.Observable;
  * Created by huynhducthanhphong on 9/4/16.
  *
  * this is a table
+ *
+ * 4 - fixme - the structure show how to communicate with Dao table
  */
 public class ItemTableDao extends Dao{
     private BriteDatabase.Transaction mTransaction;

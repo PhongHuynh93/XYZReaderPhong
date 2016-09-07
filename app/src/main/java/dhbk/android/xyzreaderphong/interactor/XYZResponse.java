@@ -9,6 +9,9 @@ import lombok.Getter;
 
 /**
  * Created by huynhducthanhphong on 9/4/16.
+ *
+ * fixme - 3 the column in database is set as @Column,
+ * this column is also the field in retrofit
  */
 @ObjectMappable
 public class XYZResponse {

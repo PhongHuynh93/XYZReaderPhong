@@ -17,6 +17,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
+/**
+ * fixme - 1 insert datas in sqlbrite + dao database in the presenter layer
+ */
 public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleListView> implements ArticleListPresenter {
     /**
      * The interactor
@@ -133,3 +136,4 @@ public final class ArticleListPresenterImpl extends BasePresenterImpl<ArticleLis
         mCompositeSubscription.add(downloadDataFromNetworkSubscription);
     }
 }
+// end insert datas in sqlbrite + dao database in the presenter layer

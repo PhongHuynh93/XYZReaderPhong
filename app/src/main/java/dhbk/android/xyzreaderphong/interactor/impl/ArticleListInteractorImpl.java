@@ -10,6 +10,9 @@ import dhbk.android.xyzreaderphong.interactor.XYZApiService;
 import dhbk.android.xyzreaderphong.interactor.XYZResponse;
 import rx.Observable;
 
+/**
+ * fixme: 2 the interactor is responsible for communicate with the database
+ */
 public final class ArticleListInteractorImpl implements ArticleListInteractor {
     private final XYZApiService mXyzApiService;
     private final ItemTableDao mItemTableDao;
