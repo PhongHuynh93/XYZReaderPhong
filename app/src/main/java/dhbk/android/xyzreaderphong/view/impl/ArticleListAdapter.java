@@ -53,14 +53,14 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         holder.titleView.setText(mXYZList.get(position).getMTitle());
         holder.authorView.setText(mXYZList.get(position).getMAuthor());
 
-
         //  - set the image depend on aspect radio
         holder.thumbnailView.setAspectRatio((float) mXYZList.get(position).getMAspectRadio());
         // end set the image depend on aspect radio
 
-        // clear the previous pending image
+        // fixme - clear the previous pending image (how to use glide)
         Glide.clear(holder.thumbnailView);
 
+        // fixme - how to use glide to cache image, and add listener when loading successful
         //  - load new image and cache this image + set palette background depend on bitmap which has downloaded
         //  - pass activity context so the image will depend on the activity lifecycle and can pause or start loading image -> so not leak memory.
         //  - diskCacheStrategy(DiskCacheStrategy.ALL) can let Glide cache 2 image (full hd image and fit image), so if we have the different image, it won't download it again.

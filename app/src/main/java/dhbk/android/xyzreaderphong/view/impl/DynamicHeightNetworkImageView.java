@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+/**
+ * todo - dynamic height of an image depend on radio
+ */
 public class DynamicHeightNetworkImageView extends ImageView {
     private float mAspectRatio = 1.5f;
 
@@ -31,3 +34,4 @@ public class DynamicHeightNetworkImageView extends ImageView {
         requestLayout();
     }
 }
+// end dynamic height of an image depend on radio

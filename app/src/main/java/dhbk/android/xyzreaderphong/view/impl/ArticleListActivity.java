@@ -135,7 +135,7 @@ public final class ArticleListActivity extends BaseActivity<ArticleListPresenter
     }
 
     /**
-     * check to see if there are any active networks.
+     * fixme check to see if there are any active networks.
      *
      * @return false: there are not any active networks
      */
